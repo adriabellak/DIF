@@ -1,44 +1,48 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+// librerías que importamos para nuestro proyecto
+import 'dart:convert'; // librería que utilizamos para encriptar la contraseña del usuario
+import 'package:http/http.dart' as http; // librería que utilizamos para hacer el request a nuestro servidor
 import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
 
 void main() => runApp(new MyApp());
 
+// Clase que se llama en nuestro main
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // Aqui es donde se crea nuestra aplicación
     return new MaterialApp(
+      // primero se llama a nuestra página de LogIn
         theme: ThemeData(primarySwatch: Colors.blue), home: LoginPage());
-    //title: 'DIF HUIXQUILUCAN',
-    //theme: new ThemeData(
-    //primarySwatch: Colors.blue,
-    //),
-    //home: new ImageTile(list: categories),
-    //);
   }
 }
 
+// clase Stateful que llama a la clase _State
 class LoginPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new _State();
 }
 
+// clase S_State que crea la página LogIn
 class _State extends State<LoginPage> {
+  // guarda los input de texto en variables
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Crea la barra con el título de la pantalla
         appBar: AppBar(
           title: Text('Login Screen App'),
         ),
         body: Padding(
             padding: EdgeInsets.all(10),
             child: ListView(
+              // crea un ListView de una lista de Widgets los cuales son los contenedores
               children: <Widget>[
+                // Contenedor del Dif Huixquilucan
                 Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.all(10),
@@ -49,27 +53,30 @@ class _State extends State<LoginPage> {
                           fontWeight: FontWeight.w500,
                           fontSize: 30),
                     )),
+                // Contenedor en donde se ingresa el Nombre de Usuario
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextField(
-                    controller: nameController,
+                    controller: nameController, // se guarda el input de nombre de usuario
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Nombre de Usuario',
                     ),
                   ),
                 ),
+                // Contenedor en donde se ingresa la Contraseña
                 Container(
                   padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: TextField(
                     obscureText: true,
-                    controller: passwordController,
+                    controller: passwordController, // se guarda el input de contraseña
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Contraseña',
                     ),
                   ),
                 ),
+                // Contenedor con el botón quee inicia sesión
                 Container(
                     height: 50,
                     padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -77,6 +84,7 @@ class _State extends State<LoginPage> {
                       textColor: Colors.white,
                       color: Colors.blue,
                       child: Text('Iniciar Sesión'),
+                      // Cuando se oprime se imprime en la terminal el usuario y la contraseña encriptada
                       onPressed: () {
                         var bytes1 = utf8.encode(
                             passwordController.text); // data being hashed
@@ -95,6 +103,7 @@ class _State extends State<LoginPage> {
   }
 }
 
+// Lista con nuestras categorías
 var categories = [
   "Educación",
   "Salud",
@@ -105,6 +114,7 @@ var categories = [
   "Actividad Física",
 ];
 
+// Lista con las Subcategorias de Educación
 var subCategories = [
   "Estancias Infantiles",
   "Jardín de Niños",
@@ -112,6 +122,7 @@ var subCategories = [
   "Aulas Móviles"
 ];
 
+// Lista con las Servicio de Estancias de Niños
 var services = [
   "DIF Central",
   "Pirules",
@@ -123,33 +134,14 @@ var services = [
   "Magdalena Chichicaspa"
 ];
 
-List<Widget> _tiles = <Widget>[
-  for (var i in categories)
-    InkWell(
-      child: Container(
-          child: Center(
-            child: Container(
-                padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                child: Text(i,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 20))),
-          ),
-          decoration: new BoxDecoration(
-            color: Colors.blue,
-            borderRadius: new BorderRadius.all(const Radius.circular(10.0)),
-          )),
-      onTap: () {
-        print(i);
-      },
-    ),
-];
-
-// counts the level of screens: 0 = Home Screen, 1 = Subcatogories, 2 = Services
+// Contador que del nivel de la aplicación: 0 = Home Screen, 1 = Subcatogories, 2 = Services
 var counterScreens = 0;
 
+// Clase de Categorias en donde se crean nuestro GridView
 class CategoriesScreen extends StatelessWidget {
+  // atributo que acepta la calse: una lista de strings
   final List<String> list;
-
+  // Constructor de la clase
   const CategoriesScreen({
     Key? key,
     required this.list,
@@ -158,7 +150,9 @@ class CategoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      // Crea el menú de hamburguesa
       drawer: Drawer(
+        // Crea un ListView
         child: ListView(children: [
           const DrawerHeader(
             decoration: BoxDecoration(
@@ -166,6 +160,7 @@ class CategoriesScreen extends StatelessWidget {
             ),
             child: Text('Menu'),
           ),
+          // Dentro del menú aparece el contrato de Términos y Condiciones
           ListTile(
             title: const Text('Términos y Condiciones'),
             onTap: () {
@@ -174,34 +169,43 @@ class CategoriesScreen extends StatelessWidget {
           ),
         ]),
       ),
+      // Título de la pantalla
       appBar: new AppBar(
         title: new Text('DIF HUIXQUILUCAN'),
       ),
       body: new Padding(
         padding: const EdgeInsets.only(top: 12.0),
+        // Crea el GridView de las Categorias y sus subcatecorias y los servicios de estas
         child: new GridView.count(
           crossAxisCount: 2,
+          // lista de Widgets
           children: <Widget>[
+            // Hace un for loop que itera por todos los valores de categoría, subcategorías y servicios
             for (var i in list)
               InkWell(
+                // Crea los contenedores donde se van a poner las categorías, subcategorías y servicios.
                 child: Container(
                     child: Center(
                       child: Container(
                           padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
                           child: Text(i,
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 20))),
+                              style: TextStyle(fontSize: 20))
+                      ),
                     ),
                     decoration: new BoxDecoration(
                       color: Colors.blue,
                       borderRadius:
                       new BorderRadius.all(const Radius.circular(10.0)),
-                    )),
+                    )
+                ),
+                // Cuando se le da click al grid se crean los grids de subcategorías para cada categoría
                 onTap: () {
                   switch (counterScreens) {
                     case 0:
                       Navigator.push(
                           context,
+                          // se crea de
                           MaterialPageRoute(
                               builder: (context) => SubcategoriesScreen(
                                   list: subCategories, category: i)));
@@ -229,10 +233,12 @@ class CategoriesScreen extends StatelessWidget {
   }
 }
 
+// Clase para la pantalla de subtegorias
 class SubcategoriesScreen extends StatelessWidget {
+  // atributos que acepta de la clase como parámetros
   final String category;
   final List<String> list;
-
+  // constructor de clase
   const SubcategoriesScreen({
     Key? key,
     required this.list,
@@ -257,10 +263,12 @@ class SubcategoriesScreen extends StatelessWidget {
   }
 }
 
+// Clase para la pantalla de servicios
 class ServicesScreen extends StatelessWidget {
+  // atributos que acepta de la calse como parámetros
   final String subCategory;
   final List<String> list;
-
+  // constructor de clase
   const ServicesScreen({
     Key? key,
     required this.list,
@@ -317,7 +325,9 @@ class ServicesScreen extends StatelessWidget {
   }
 }
 
+// función fetch para obtener datos del servicio
 Future<ServiceRequest> fetchServiceRequest() async {
+  // variable de response
   final response = await http
       .get(Uri.parse('http://52.207.255.109:5000/servicio/'));
 
@@ -333,6 +343,7 @@ Future<ServiceRequest> fetchServiceRequest() async {
   }
 }
 
+// Service request para cada servicio
 class ServiceRequest {
   final ServiceDetail one;
   final ServiceDetail two;
@@ -353,6 +364,7 @@ class ServiceRequest {
   }
 }
 
+// clase con variables de la base de datos en la tabla de servicios
 class ServiceDetail {
   final int idServicio;
   final String direccion;
@@ -394,6 +406,7 @@ class ServiceDetail {
   }
 }
 
+// clase que enseña la información de casda servicio con base a la información de la base de datos
 class ServiceDetailScreen extends StatelessWidget {
   final String service;
   late Future<ServiceRequest> serviceDetails;
@@ -455,36 +468,6 @@ class ServiceDetailScreen extends StatelessWidget {
               return const CircularProgressIndicator();
             },
           )
-        /*child: Column(
-          children: [
-            // desc
-            Container(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-              child: Text('Descripción: Niños y niñas de la comunidad de Santiago Yancuitlalpan pueden acudir al Comedor Infantil, en donde recibirán una alimentación balanceada, además todo el servicio se brinda bajo las medidas de higiene adecuadas para proteger la salud de los pequeños y sus familias. Para inscribirte y solicitar información puedes acudir directamente de 12:30 a 15:00 horas',
-              textAlign: TextAlign.justify),
-            ),
-            // ubicación
-            Container(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-              child: Text('Dirección: '),
-              alignment: Alignment.topLeft,
-            ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-              child: Text('Cuota: '),
-              alignment: Alignment.topLeft,
-            ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-              child: Text('Contacto: '),
-              alignment: Alignment.topLeft,
-            ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-              child: Image.network('https://picsum.photos/250?image=9'),
-            ),
-          ],
-        ),*/
       ),
     );
   }
